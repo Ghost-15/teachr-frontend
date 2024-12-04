@@ -80,7 +80,7 @@ function AllCategorie() {
                                             <td className="px-6 py-4">
                                             <Link to={'/modifierC/'+categorie.id} className="font-medium text-blue-500 hover:underline">Modifier</Link>
                                                 /
-                                                <button onClick={() => deleteP(product.id)} className="font-medium text-red-500 hover:underline"> Supprimer</button>
+                                                <button onClick={() => deleteP(categorie.id)} className="font-medium text-red-500 hover:underline"> Supprimer</button>
                                             </td>
                                         </tr>
                                         </tbody>

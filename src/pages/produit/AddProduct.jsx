@@ -41,6 +41,8 @@ function AddProduct() {
                 setPrix('')
                 setCategorie('')
                 setSuccMsg('Nouveau produit ajouter');
+                isSubmiting.style.display = "block";
+                isLoading.style.display = "none";
             }
         }catch (err) {
             isSubmiting.style.display = "block";
@@ -91,7 +93,7 @@ function AddProduct() {
                                     onChange={(e) => setCategorie(e.target.value)}
                                     required
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                                <option selected>Selectionner la category</option>
+                                <option selected>Selectionner la catégorie</option>
                                 <option value="TYV">Protection de la tête, des yeux et du visage</option>
                                 <option value="auditive">Bouchons d&apos;oreilles et casques antibruit</option>
                                 <option value="respiratoire">Protection respiratoire</option>

@@ -21,6 +21,7 @@ function ModifierProduct() {
 
     useEffect(() => {
         document.getElementById("Loading").style.display = "none";
+        errRef.current.focus();
     }, [])
 
     const onSubmit = async (e) => {
@@ -42,6 +43,8 @@ function ModifierProduct() {
                 setPrix('')
                 setCategorie('')
                 setSuccMsg('Produit modifier');
+                isSubmiting.style.display = "block";
+                isLoading.style.display = "none";
             }
         } catch (err) {
             isSubmiting.style.display = "block";

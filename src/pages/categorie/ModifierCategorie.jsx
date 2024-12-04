@@ -36,6 +36,8 @@ function ModifierCategorie() {
             if(response?.status === 200){
                 setNom('')
                 setSuccMsg('Categorie modifier');
+                isSubmiting.style.display = "block";
+                isLoading.style.display = "none";
             }
         }catch (err) {
             isSubmiting.style.display = "block";
@@ -53,9 +55,10 @@ function ModifierCategorie() {
 
     return (
         <div className="h-screen">
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                    Ajouter une categorie</h2>
+            <h2 className="mt-10 flex justify-center text-5xl font-bold text-[#3399FF]">
+                Modifier la categorie {id}</h2>
+            <div className="mt-10 justify-items-center grid grid-cols-1 gap-4">
+
                 <p ref={errRef} className="text-green-600 text-center" aria-live="assertive">{succMsg}</p>
                 <p ref={errRef} className="text-red-600 text-center" aria-live="assertive">{errMsg}</p>
             </div>
