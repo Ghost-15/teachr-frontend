@@ -3,8 +3,7 @@ import axios from "../../app/api/axios.js";
 
 function AddProduct() {
 
-    const userRef = useRef();
-    const errRef = useRef();
+    const ref = useRef();
 
     const [nom, setNom] = useState('')
     const [description, setDescription] = useState('')
@@ -19,7 +18,7 @@ function AddProduct() {
 
     useEffect(() => {
         document.getElementById("Loading").style.display = "none";
-        userRef.current.focus();
+        ref.current.focus();
     }, [])
 
     const onSubmit = async (e) => {
@@ -51,7 +50,7 @@ function AddProduct() {
             } else {
                 setErrMsg('Ce produit existe deja');
             }
-            errRef.current.focus();
+            ref.current.focus();
         }
     };
 
@@ -60,8 +59,8 @@ function AddProduct() {
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                     Ajouter un produit</h2>
-                <p ref={errRef} className="text-green-600 text-center" aria-live="assertive">{succMsg}</p>
-                <p ref={errRef} className="text-red-600 text-center" aria-live="assertive">{errMsg}</p>
+                <p ref={ref} className="text-green-600 text-center" aria-live="assertive">{succMsg}</p>
+                <p ref={ref} className="text-red-600 text-center" aria-live="assertive">{errMsg}</p>
             </div>
 
             <div className="flex justify-center mt-5">

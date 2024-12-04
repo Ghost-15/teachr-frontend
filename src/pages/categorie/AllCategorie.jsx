@@ -3,7 +3,7 @@ import axios from "../../app/api/axios.js";
 import {Link} from "react-router-dom";
 
 function AllCategorie() {
-    const errRef = useRef(null);
+    const errRef = useRef();
 
     const [categories, setCategorie] = useState([]);
     const [errMsg, setErrMsg] = useState('');
@@ -19,6 +19,7 @@ function AllCategorie() {
             setSuccMsg('');
             setCategorie(result.data);
         } catch (err) {
+            setSuccMsg('');
             if (!err?.response) {
                 setErrMsg("Il n'y a aucun résultat à afficher");
             } else if (err.response?.status === 404){
