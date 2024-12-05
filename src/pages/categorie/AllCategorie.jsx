@@ -48,7 +48,7 @@ function AllCategorie() {
 
     return (
         <main className="h-screen">
-            <h1 className="mt-10 flex justify-center text-5xl font-bold text-[#3399FF]">Tous les Produits</h1>
+            <h1 className="mt-10 flex justify-center text-5xl font-bold text-[#3399FF]">Toutes les Categories</h1>
             <div className="mt-10 justify-items-center grid grid-cols-1 gap-4">
 
                 <p ref={errRef} className="text-green-600 text-center" aria-live="assertive">{succMsg}</p>
