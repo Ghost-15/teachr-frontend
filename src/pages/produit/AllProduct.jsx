@@ -19,6 +19,7 @@ function AllProduct() {
             setSuccMsg('');
             setProducts(result.data);
         } catch (err) {
+        setSuccMsg('');
             if (!err?.response) {
                 setErrMsg("Il n'y a aucun résultat à afficher");
             } else if (err.response?.status === 404){
