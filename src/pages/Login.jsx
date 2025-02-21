@@ -110,9 +110,9 @@ const Login = () => {
                         </div>
                     </div>
 
-                    <div className="mt-5">
+                    <div className="mt-10">
                         <button id="Submit" type="submit" className="flex w-full justify-center rounded-md bg-black px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                            Register
+                            CONNEXION
                         </button>
 
                         <button id="Loading" className="w-full justify-center px-3 py-1.5 rounded-lg focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 bg-gray-800 text-gray-400 border-gray-600 hover:text-white hover:bg-gray-700 inline-flex items-center" disabled>
@@ -129,11 +129,17 @@ const Login = () => {
                             Chargement
                         </button>
                     </div>
-                    <div className="text-sm mt-4">
-                        <Link to="/addUser"
-                           className="font-semibold text-sky-800 hover:text-sky-600 hover:underline hover:underline-offset-8">
-                            Cree un Utilisateur</Link>
+
+                    <div className="inline-flex items-center justify-center w-full">
+                        <hr className="w-64 h-px my-8 bg-gray-500 border-0"/>
+                            <span
+                                className="absolute px-3 font-medium text-black bg-white">or</span>
                     </div>
+
+                    <Link to="/addUser">
+                        <button className="flex w-full justify-center rounded-md border-2 border-sky-600 bg-white px-3 py-1.5 text-sm font-semibold leading-6 text-sky-800 shadow-sm hover:bg-sky-600 hover:text-white">
+                            JE M'INSCRIS</button>
+                    </Link>
 
                 </div>
 

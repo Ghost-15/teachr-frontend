@@ -1,10 +1,13 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import Navbar from "../../compoments/Navbar.jsx";
+import Endbar from "../../compoments/Endbar.jsx";
 
 function CategorieHub() {
     return (
-
-        <main className='flex h-screen justify-center'>
+    <main>
+        <Navbar/>
+        <div className='flex h-screen justify-center'>
             <div className='bg-center h-48 grid grid-cols-1 gap-4 content-around '>
                 <h2 className="mt-10 flex justify-center text-5xl font-bold text-[#3399FF]">
                     Bienvenu dans la section Categorie</h2>
@@ -24,7 +27,10 @@ function CategorieHub() {
                     </Link>
                 </div>
             </div>
-        </main>    );
+        </div>
+        <Endbar/>
+    </main>
+    );
 }
 
 export default CategorieHub;

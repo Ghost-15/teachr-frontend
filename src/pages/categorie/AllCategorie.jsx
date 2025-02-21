@@ -1,6 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
 import axios from "../../app/api/axios.js";
 import {Link} from "react-router-dom";
+import Navbar from "../../compoments/Navbar.jsx";
+import Endbar from "../../compoments/Endbar.jsx";
 
 function AllCategorie() {
     const errRef = useRef();
@@ -13,6 +15,8 @@ function AllCategorie() {
         getAll();
     }, []);
     const getAll = async () => {
+        setSuccMsg('');
+        setErrMsg('')
         setSuccMsg("Chargement...")
         try {
             const result = await axios.get("/routeC/allCategorie");
@@ -30,13 +34,23 @@ function AllCategorie() {
             errRef.current.focus();
         }
     };
+    const startTimer = () => {
+        setTimeout(() => {
+            getAll();
+        }, 2000);
+    };
     const deleteP = async (id) => {
+        setSuccMsg('');
+        setErrMsg('')
+        setSuccMsg('Veulliez patienter...');
         try {
             const result = await axios.get("/routeC/deteleC/"+id);
             if(result?.status === 200){
-                window.location.reload();
+                setSuccMsg("Supprimer");
+                startTimer()
             }
         } catch (err) {
+            setSuccMsg('');
             if (!err?.response) {
                 setErrMsg("Il n'y a aucun résultat à afficher");
             } else {
@@ -47,7 +61,9 @@ function AllCategorie() {
     }
 
     return (
-        <main className="h-screen">
+        <main>
+            <Navbar/>
+        <div className="h-screen">
             <h1 className="mt-10 flex justify-center text-5xl font-bold text-[#3399FF]">Tous les Produits</h1>
             <div className="mt-10 justify-items-center grid grid-cols-1 gap-4">
 
@@ -78,9 +94,9 @@ function AllCategorie() {
                                                 {categorie.nom}
                                             </th>
                                             <td className="px-6 py-4">
-                                            <Link to={'/modifierC/'+categorie.id} className="font-medium text-blue-500 hover:underline">Modifier</Link>
-                                                /
-                                                <button onClick={() => deleteP(categorie.id)} className="font-medium text-red-500 hover:underline"> Supprimer</button>
+                                            <Link to={'/modifierC/'+categorie.id} className="font-medium text-blue-500 hover:underline">
+                                                Modifier</Link> / <button onClick={() => deleteP(categorie.id)} className="font-medium text-red-500 hover:underline">
+                                                Supprimer</button>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -90,6 +106,8 @@ function AllCategorie() {
                     </div>
                 </div>
             </div>
+        </div>
+            <Endbar/>
         </main>
     );
 }

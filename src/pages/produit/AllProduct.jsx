@@ -1,6 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
 import axios from "../../app/api/axios.js";
 import {Link} from "react-router-dom";
+import Navbar from "../../compoments/Navbar.jsx";
+import Endbar from "../../compoments/Endbar.jsx";
 
 function AllProduct() {
     const errRef = useRef(null);
@@ -14,7 +16,6 @@ function AllProduct() {
     }, []);
     const getAll = async () => {
         setSuccMsg("Chargement...")
-        // e.preventDefault();
         try {
             const result = await axios.get("/routeP/allProduct");
             setSuccMsg('');
@@ -48,7 +49,9 @@ function AllProduct() {
     }
 
     return (
-        <main className="h-screen">
+        <main>
+            <Navbar/>
+            <div className='h-screen'>
             <h1 className="mt-10 flex justify-center text-5xl font-bold text-[#3399FF]">Tous les Produits</h1>
             <div className="mt-10 justify-items-center grid grid-cols-1 gap-4">
 
@@ -104,8 +107,7 @@ function AllProduct() {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <Link to={'/modifierP/'+product.id} className="font-medium text-blue-500 hover:underline">
-                                                    Modifier </Link>
-                                                / <button onClick={() => deleteP(product.id)}
+                                                    Modifier</Link> / <button onClick={() => deleteP(product.id)}
                                                        className="font-medium text-red-500 hover:underline">Supprimer</button>
                                             </td>
                                         </tr>
@@ -116,6 +118,8 @@ function AllProduct() {
                     </div>
                 </div>
             </div>
+            </div>
+            <Endbar/>
         </main>
     );
 }

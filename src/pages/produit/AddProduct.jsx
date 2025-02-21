@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import axios from "../../app/api/axios.js";
 
 function AddProduct() {
@@ -12,18 +12,32 @@ function AddProduct() {
 
     const [errMsg, setErrMsg] = useState('');
     const [succMsg, setSuccMsg] = useState('');
+    const [resultMsg, setResultMsg] = useState('');
 
     const isSubmiting = document.getElementById("Submit")
     const isLoading = document.getElementById("Loading")
 
     useEffect(() => {
         document.getElementById("Loading").style.display = "none";
+        getAllCategorie();
         ref.current.focus();
     }, [])
+
+    const getAllCategorie = async () => {
+        try {
+            const result = await axios.get("/routeC/allCategorie");
+        setCategorie(result.data);
+        } catch (err) {
+            if(err?.status === 404){
+                setResultMsg("Il n'y a aucune categorie à afficher, Veuillez d'abord en ajouter.");
+            }
+        }
+    };
 
     const onSubmit = async (e) => {
         setErrMsg('')
         setSuccMsg('')
+        setResultMsg('')
         e.preventDefault();
         try {
             isSubmiting.style.display = "none";
@@ -44,11 +58,13 @@ function AddProduct() {
                 isSubmiting.style.display = "block";
                 isLoading.style.display = "none";
             }
-        }catch (err) {
+        } catch (err) {
             isSubmiting.style.display = "block";
             isLoading.style.display = "none";
             if (!err?.response) {
                 setErrMsg('Fetch Failed');
+            } else if (err.response?.status === 404){
+                setResultMsg("Il n'y a aucune categorie à afficher, Veuillez d'abord en ajouter.");
             } else {
                 setErrMsg('Ce produit existe deja');
             }
@@ -57,17 +73,18 @@ function AddProduct() {
     };
 
     return (
-        <div className="h-screen">
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                    Ajouter un produit</h2>
-                <p ref={ref} className="text-green-600 text-center" aria-live="assertive">{succMsg}</p>
-                <p ref={ref} className="text-red-600 text-center" aria-live="assertive">{errMsg}</p>
-            </div>
+        <div className="bg-gradient-to-t from-sky-500 to-sky-800">
+            <div className="flex h-screen flex-col">
+                <div className="mt-20 sm:mx-auto sm:w-full sm:max-w-sm">
 
-            <div className="flex justify-center mt-5">
+                <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8">
                 <form onSubmit={(e) => onSubmit(e)} className="space-y-6">
 
+                        <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                            Ajouter un produit</h2>
+                        <p ref={ref} className="text-green-600 text-center" aria-live="assertive">{succMsg}</p>
+                        <p ref={ref} className="text-red-600 text-center" aria-live="assertive">{errMsg}</p>
+                        <p ref={ref} className="text-red-600 text-center" aria-live="assertive">{resultMsg}</p>
                     <div className="grid grid-cols-1 gap-6">
                         <div>
                             <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
@@ -93,15 +110,12 @@ function AddProduct() {
                                     onChange={(e) => setCategorie(e.target.value)}
                                     required
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                                <option selected>Selectionner la catégorie</option>
-                                <option value="TYV">Protection de la tête, des yeux et du visage</option>
-                                <option value="auditive">Bouchons d&apos;oreilles et casques antibruit</option>
-                                <option value="respiratoire">Protection respiratoire</option>
-                                <option value="main">Gants de protection et de dtravail</option>
-                                <option value="pied">Chaussures de sécurité et de travail</option>
-                                <option value="corps">Vêtements de travail</option>
-                                <option value="antichute">Protection antichute</option>
-                                <option value="comp">Compléter sa protection</option>
+                                <option disabled>Selectionner la catégorie</option>
+                                {Array.isArray(categorie) ? (
+                                    categorie.map(categorie =>  (
+                                <option key={categorie.id} selected>{categorie.nom}</option>
+                                    )))
+                                    : (<p>null</p>)}
                             </select>
                             </div>
                         </div>
@@ -123,7 +137,7 @@ function AddProduct() {
 
                         <label htmlFor="description" className="block text-sm font-medium leading-6 text-gray-900">
                             Description</label>
-                        <div className="mt-2">
+                        <div>
                                 <textarea
                                     placeholder="Entre la description"
                                     name="description"
@@ -151,9 +165,13 @@ function AddProduct() {
                                     d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
                                     fill="#1C64F2"/>
                             </svg>
+                            Chargement
                         </button>
                     </div>
+
                 </form>
+            </div>
+            </div>
             </div>
         </div>
     );

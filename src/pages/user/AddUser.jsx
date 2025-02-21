@@ -70,8 +70,7 @@ const AddUser = () => {
         <div className="bg-gradient-to-t from-sky-500 to-sky-800">
             <div className="flex h-screen flex-col">
                 <div className="mt-20 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <div
-                        className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8">
+                    <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8">
 
                         <form onSubmit={(e) => onSubmit(e)} method="post">
 
