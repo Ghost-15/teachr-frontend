@@ -8,11 +8,11 @@ function AddProduct() {
     const [nom, setNom] = useState('')
     const [description, setDescription] = useState('')
     const [prix, setPrix] = useState('')
-    const [categorie, setCategorie] = useState('')
+    const [categories, setCategories] = useState({})
+    const [selectedCategory, setSelectedCategory] = useState("");
 
     const [errMsg, setErrMsg] = useState('');
     const [succMsg, setSuccMsg] = useState('');
-    const [resultMsg, setResultMsg] = useState('');
 
     const isSubmiting = document.getElementById("Submit")
     const isLoading = document.getElementById("Loading")
@@ -26,10 +26,10 @@ function AddProduct() {
     const getAllCategorie = async () => {
         try {
             const result = await axios.get("/routeC/allCategorie");
-        setCategorie(result.data);
+        setCategories(result.data);
         } catch (err) {
             if(err?.status === 404){
-                setResultMsg("Il n'y a aucune categorie à afficher, Veuillez d'abord en ajouter.");
+                setErrMsg("Il n'y a aucune categorie à afficher, Veuillez d'abord en ajouter.");
             }
         }
     };
@@ -37,13 +37,13 @@ function AddProduct() {
     const onSubmit = async (e) => {
         setErrMsg('')
         setSuccMsg('')
-        setResultMsg('')
         e.preventDefault();
+
         try {
             isSubmiting.style.display = "none";
             isLoading.style.display = "block";
             const response = await axios.post("/routeP/addProduct",
-                JSON.stringify({nom, description, prix, categorie}),
+                JSON.stringify({nom, description, prix, selectedCategory}),
                 {
                     headers: {'Content-Type': 'application/json'},
                     withCredentials: true
@@ -53,7 +53,6 @@ function AddProduct() {
                 setNom('')
                 setDescription('')
                 setPrix('')
-                setCategorie('')
                 setSuccMsg('Nouveau produit ajouter');
                 isSubmiting.style.display = "block";
                 isLoading.style.display = "none";
@@ -63,9 +62,11 @@ function AddProduct() {
             isLoading.style.display = "none";
             if (!err?.response) {
                 setErrMsg('Fetch Failed');
-            } else if (err.response?.status === 404){
-                setResultMsg("Il n'y a aucune categorie à afficher, Veuillez d'abord en ajouter.");
-            } else {
+            }
+            else if (err.response?.status === 404){
+                setErrMsg("Veuillez selectionner une categorie.");
+            }
+            else {
                 setErrMsg('Ce produit existe deja');
             }
             ref.current.focus();
@@ -84,7 +85,7 @@ function AddProduct() {
                             Ajouter un produit</h2>
                         <p ref={ref} className="text-green-600 text-center" aria-live="assertive">{succMsg}</p>
                         <p ref={ref} className="text-red-600 text-center" aria-live="assertive">{errMsg}</p>
-                        <p ref={ref} className="text-red-600 text-center" aria-live="assertive">{resultMsg}</p>
+                        {/*<p ref={ref} className="text-red-600 text-center" aria-live="assertive">{resultMsg}</p>*/}
                     <div className="grid grid-cols-1 gap-6">
                         <div>
                             <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
@@ -105,18 +106,20 @@ function AddProduct() {
                             <label htmlFor="category" className="block text-sm font-medium leading-6 text-gray-900">
                                 Catégories</label>
                             <div className="mt-2">
-                            <select id="category"
-                                    value={categorie}
-                                    onChange={(e) => setCategorie(e.target.value)}
+                                <select
+                                    id="category"
+                                    value={selectedCategory}
+                                    onChange={(e) => setSelectedCategory(e.target.value)}
                                     required
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                                <option disabled>Selectionner la catégorie</option>
-                                {Array.isArray(categorie) ? (
-                                    categorie.map(categorie =>  (
-                                <option key={categorie.id} selected>{categorie.nom}</option>
-                                    )))
-                                    : (<p>null</p>)}
-                            </select>
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                >
+                                    <option value="" disabled>Selectionner la catégorie</option>
+                                    {Array.isArray(categories) &&
+                                        categories.map((categorie, index) => (
+                                            <option key={index} value={categorie.nom}>{categorie.nom}</option>
+                                        ))}
+                                    {/*<option value="" disabled>Ajouter une categorie</option>*/}
+                                </select>
                             </div>
                         </div>
 

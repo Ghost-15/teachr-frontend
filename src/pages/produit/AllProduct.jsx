@@ -15,6 +15,8 @@ function AllProduct() {
         getAll();
     }, []);
     const getAll = async () => {
+        setSuccMsg('');
+        setErrMsg('')
         setSuccMsg("Chargement...")
         try {
             const result = await axios.get("/routeP/allProduct");
@@ -32,13 +34,23 @@ function AllProduct() {
             errRef.current.focus();
         }
     };
+    const startTimer = () => {
+        setTimeout(() => {
+            getAll();
+        }, 2000);
+    };
     const deleteP = async (id) => {
+        setSuccMsg('');
+        setErrMsg('')
+        setSuccMsg('Veulliez patienter...');
         try {
             const result = await axios.get("/routeP/deteleP/"+id);
             if(result?.status === 200){
-                window.location.reload();
+                setSuccMsg("Supprimer");
+                startTimer()
             }
         } catch (err) {
+            setSuccMsg('');
             if (!err?.response) {
                 setErrMsg("Il n'y a aucun résultat à afficher");
             } else {

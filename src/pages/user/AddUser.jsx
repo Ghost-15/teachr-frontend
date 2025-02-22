@@ -144,8 +144,8 @@ const AddUser = () => {
                                                 onChange={(e) => setRole(e.target.value)}
                                                 required
                                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                                            <option>ROLE_USER</option>
-                                            <option>ROLE_ADMIN</option>
+                                            <option value="ROLE_USER" selected>ROLE_USER</option>
+                                            <option value="ROLE_ADMIN">ROLE_ADMIN</option>
                                         </select>
                                         </div>
                                     </div>

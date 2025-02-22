@@ -11,11 +11,11 @@ function ModifierProduct() {
     const [nom, setNom] = useState('')
     const [description, setDescription] = useState('')
     const [prix, setPrix] = useState('')
-    const [categorie, setCategorie] = useState('')
+    const [categories, setCategories] = useState({})
+    const [selectedCategory, setSelectedCategory] = useState("");
 
     const [errMsg, setErrMsg] = useState('');
     const [succMsg, setSuccMsg] = useState('');
-    const [resultMsg, setResultMsg] = useState('');
 
     const isSubmiting = document.getElementById("Submit")
     const isLoading = document.getElementById("Loading")
@@ -31,10 +31,10 @@ function ModifierProduct() {
     const getAllCategorie = async () => {
         try {
             const result = await axios.get("/routeC/allCategorie");
-            setCategorie(result.data);
+            setCategories(result.data);
         } catch (err) {
             if(err?.status === 404){
-                setResultMsg("Il n'y a aucune categorie à afficher, Veuillez d'abord en ajouter.");
+                setErrMsg("Il n'y a aucune categorie à afficher, Veuillez d'abord en ajouter.");
             }
         }
     };
@@ -52,13 +52,13 @@ function ModifierProduct() {
     const onSubmit = async (e) => {
         setErrMsg('')
         setSuccMsg('')
-        setResultMsg('')
         e.preventDefault();
+
         try {
             isSubmiting.style.display = "none";
             isLoading.style.display = "block";
             const response = await axios.post("/routeP/udapteProduct",
-                JSON.stringify({p_id, nom, description, prix, categorie}),
+                JSON.stringify({p_id, nom, description, prix, selectedCategory}),
                 {
                     headers: {'Content-Type': 'application/json'},
                     withCredentials: true
@@ -67,7 +67,6 @@ function ModifierProduct() {
                 setNom('')
                 setDescription('')
                 setPrix('')
-                setCategorie('')
                 setSuccMsg('Produit modifier');
                 isSubmiting.style.display = "block";
                 isLoading.style.display = "none";
@@ -92,7 +91,6 @@ function ModifierProduct() {
             <div className="mt-10 justify-items-center grid grid-cols-1 gap-4">
                 <p ref={ref} className="text-green-600 text-center" aria-live="assertive">{succMsg}</p>
                 <p ref={ref} className="text-red-600 text-center" aria-live="assertive">{errMsg}</p>
-                <p ref={ref} className="text-red-600 text-center" aria-live="assertive">{resultMsg}</p>
 
                 <div className="flex justify-center mt-5">
                     <form onSubmit={(e) => onSubmit(e)} className="space-y-6">
@@ -116,17 +114,19 @@ function ModifierProduct() {
                                 <label htmlFor="category" className="block text-sm font-medium leading-6 text-gray-900">
                                     Catégories</label>
                                 <div className="mt-2">
-                                    <select id="category"
-                                            value={categorie}
-                                            onChange={(e) => setCategorie(e.target.value)}
-                                            required
-                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                                        <option disabled selected>Selectionner la catégorie</option>
-                                        {Array.isArray(categorie) ? (
-                                                categorie.map(categorie =>  (
-                                                    <option>{categorie.nom}</option>
-                                                )))
-                                            : (<p>null</p>)}
+                                    <select
+                                        id="category"
+                                        value={selectedCategory}
+                                        onChange={(e) => setSelectedCategory(e.target.value)}
+                                        required
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                    >
+                                        <option value="" disabled>Selectionner la catégorie</option>
+                                        {Array.isArray(categories) &&
+                                            categories.map((categorie, index) => (
+                                                <option key={index} value={categorie.nom}>{categorie.nom}</option>
+                                            ))}
+                                        {/*<option value="" disabled>Ajouter une categorie</option>*/}
                                     </select>
                                 </div>
                             </div>
