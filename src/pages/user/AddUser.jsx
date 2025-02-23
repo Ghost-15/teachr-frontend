@@ -57,6 +57,7 @@ const AddUser = () => {
         }catch (err) {
             isSubmiting.style.display = "block";
             isLoading.style.display = "none";
+            console.log(err)
             if (!err?.response) {
                 setErrMsg('Fetch Failed');
             } else {
