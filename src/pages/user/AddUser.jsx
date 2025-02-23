@@ -58,9 +58,9 @@ const AddUser = () => {
             isSubmiting.style.display = "block";
             isLoading.style.display = "none";
             if (!err?.response) {
-                setErrMsg('Cette address mail exist deja');
-            } else {
                 setErrMsg('Fetch Failed');
+            } else {
+                setErrMsg('Cette address mail exist deja');
             }
             userRef.current.focus();
         }
