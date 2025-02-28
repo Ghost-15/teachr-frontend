@@ -47,6 +47,7 @@ const Login = () => {
         } catch (err) {
             isSubmiting.style.display = "block";
             isLoading.style.display = "none";
+                      console.log(err.response)
             if (!err?.response) {
                 setErrMsg('Login Failed');
             } else if (err.response?.status === 400) {
